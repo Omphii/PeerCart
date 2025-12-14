@@ -1,0 +1,97 @@
+/* ============================================
+   ROOT VARIABLES - LIGHT MODE (DEFAULT)
+   ============================================ */
+
+:root {
+    /* Color System - Light Mode */
+    --color-primary: 67, 97, 238;    /* #4361ee */
+    --color-secondary: 114, 9, 183;  /* #7209b7 */
+    --color-accent: 247, 37, 133;    /* #f72585 */
+    --color-success: 76, 201, 240;   /* #4cc9f0 */
+    --color-warning: 248, 150, 30;   /* #f8961e */
+    --color-danger: 230, 57, 70;     /* #e63946 */
+    
+    /* Neutral Colors - Light */
+    --color-bg: 255, 255, 255;       /* #ffffff */
+    --color-surface: 248, 249, 250;  /* #f8f9fa */
+    --color-text: 26, 26, 46;        /* #1a1a2e */
+    --color-text-muted: 108, 117, 125; /* #6c757d */
+    --color-border: 226, 232, 240;   /* #e2e8f0 */
+    
+    /* Opacity Levels */
+    --opacity-disabled: 0.5;
+    --opacity-muted: 0.7;
+    --opacity-hover: 0.9;
+    
+    /* Spacing Scale */
+    --space-unit: 0.25rem;
+    --space-0: 0;
+    --space-1: calc(1 * var(--space-unit));  /* 0.25rem */
+    --space-2: calc(2 * var(--space-unit));  /* 0.5rem */
+    --space-3: calc(3 * var(--space-unit));  /* 0.75rem */
+    --space-4: calc(4 * var(--space-unit));  /* 1rem */
+    --space-5: calc(5 * var(--space-unit));  /* 1.25rem */
+    --space-6: calc(6 * var(--space-unit));  /* 1.5rem */
+    --space-8: calc(8 * var(--space-unit));  /* 2rem */
+    --space-10: calc(10 * var(--space-unit));/* 2.5rem */
+    --space-12: calc(12 * var(--space-unit));/* 3rem */
+    --space-16: calc(16 * var(--space-unit));/* 4rem */
+    
+    /* Typography */
+    --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-family-heading: 'Inter', var(--font-family-base);
+    
+    --font-size-xs: 0.75rem;    /* 12px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-base: 1rem;     /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.25rem;    /* 20px */
+    --font-size-2xl: 1.5rem;    /* 24px */
+    --font-size-3xl: 1.875rem;  /* 30px */
+    --font-size-4xl: 2.25rem;   /* 36px */
+    --font-size-5xl: 3rem;      /* 48px */
+    
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-black: 900;
+    
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+    
+    /* Border Radius */
+    --radius-none: 0;
+    --radius-sm: 0.25rem;    /* 4px */
+    --radius-md: 0.5rem;     /* 8px */
+    --radius-lg: 0.75rem;    /* 12px */
+    --radius-xl: 1rem;       /* 16px */
+    --radius-full: 9999px;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Z-index */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-modal: 1050;
+    --z-popover: 1070;
+    --z-tooltip: 1080;
+    
+    /* Container */
+    --container-sm: 640px;
+    --container-md: 768px;
+    --container-lg: 1024px;
+    --container-xl: 1280px;
+    --container-2xl: 1536px;
+}

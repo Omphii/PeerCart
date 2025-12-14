@@ -1,0 +1,613 @@
+/* assets/css/navbar.css - COMPACT VERSION */
+
+/* Navbar */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.714);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: 70px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Logo */
+.logo a {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--dark-color);
+    text-decoration: none;
+}
+.logo span {
+    color: var(--primary-color);
+}
+
+/* Main Navigation */
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    gap: 15px;
+}
+
+.main-nav li {
+    position: relative;
+}
+
+.main-nav a {
+    font-weight: 500;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    transition: color var(--transition-speed);
+    color: var(--dark-color);
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.main-nav i {
+    margin-right: 8px;
+    font-size: 16px;
+    width: 16px;
+    text-align: center;
+}
+
+/* Account Welcome */
+.account-welcome {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--dark-color);
+    margin-right: 20px;
+}
+
+/* Cart count */
+.cart-count {
+    background-color: var(--danger-color);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+/* Dropdowns */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    z-index: 1000;
+    padding: 10px 0;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.dropdown-content a {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: var(--dark-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.dropdown-content a:hover {
+    background: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+    padding-left: 25px;
+}
+
+/* Compact Mega Menu - 2-COLUMN LAYOUT */
+.mega-menu-compact {
+    display: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    z-index: 999;
+    padding: 20px;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.dropdown:hover .mega-menu-compact {
+    display: grid;
+    animation: slideDown 0.3s ease-out;
+}
+
+.dropdown-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-section .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+.dropdown-section .section-title i {
+    margin-right: 8px;
+    color: var(--primary-color);
+    font-size: 14px;
+}
+
+.section-items {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Compact columns for categories and locations */
+.compact-column {
+    margin-bottom: 15px;
+}
+
+.compact-column h5 {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 10px 0 8px 0;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+}
+
+.compact-column h5 i {
+    margin-right: 6px;
+    font-size: 12px;
+}
+
+.compact-column a {
+    display: block;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--dark-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    padding-left: 5px;
+}
+
+.compact-column a:hover {
+    color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.05);
+    padding-left: 10px;
+}
+
+.compact-column a.view-all {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 12px;
+}
+
+/* Quick links grid */
+.compact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.quick-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 5px;
+    font-size: 11px;
+    color: var(--dark-color);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.quick-link:hover {
+    background: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+    border-color: rgba(var(--primary-color-rgb), 0.2);
+    transform: translateY(-1px);
+}
+
+.quick-link i {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--secondary-color);
+}
+
+.quick-link span {
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { 
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Mobile menu */
+.mobile-menu-btn {
+    display: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.mobile-menu {
+    display: none;
+    background: #fff;
+    padding: 20px;
+    border-top: 1px solid #eee;
+}
+
+.mobile-menu.active {
+    display: block;
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobile-menu li {
+    margin-bottom: 5px;
+}
+
+.mobile-menu a {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    font-size: 15px;
+    color: var(--dark-color);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.mobile-menu a:hover {
+    background: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+}
+
+/* Mobile dropdown */
+.mobile-dropdown-content {
+    display: none;
+    padding-left: 20px;
+    background: rgba(0,0,0,0.02);
+    border-radius: 8px;
+    margin: 5px 0;
+}
+
+.mobile-dropdown.active .mobile-dropdown-content {
+    display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-nav {
+        display: none;
+    }
+    
+    .mobile-menu-btn {
+        display: block;
+    }
+    
+    .account-welcome {
+        display: none;
+    }
+    
+    .mega-menu-compact {
+        width: 95vw;
+        left: 2.5vw;
+        transform: none;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .compact-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar .container {
+        padding: 0 15px;
+    }
+    
+    .logo a {
+        font-size: 24px;
+    }
+    
+    .compact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Add CSS variables for RGB values */
+:root {
+    --primary-color-rgb: 59, 130, 246;
+    --secondary-color-rgb: 168, 85, 247;
+}
+
+/* assets/css/navbar.css - COLLAPSIBLE VERSION */
+
+/* ... (keep all the existing navbar styles) ... */
+
+/* Collapsible Mega Menu */
+.mega-menu-collapsible {
+    display: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    z-index: 999;
+    padding: 20px;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.dropdown:hover .mega-menu-collapsible {
+    display: grid;
+    animation: slideDown 0.3s ease-out;
+}
+
+.dropdown-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-section .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(var(--primary-color-rgb), 0.2);
+}
+
+.dropdown-section .section-title i {
+    margin-right: 8px;
+    color: var(--primary-color);
+    font-size: 14px;
+}
+
+.section-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Collapsible Sections */
+.collapsible-section {
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    background: rgba(var(--primary-color-rgb), 0.03);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--dark-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    text-align: left;
+}
+
+.collapsible-header:hover {
+    background: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+}
+
+.collapsible-header i:first-child {
+    margin-right: 8px;
+    color: var(--secondary-color);
+}
+
+.collapsible-header .fa-chevron-right {
+    margin-left: auto;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-section.active .collapsible-header .fa-chevron-right {
+    transform: rotate(90deg);
+}
+
+.collapsible-content {
+    display: none;
+    padding: 0 15px 10px 15px;
+    background: white;
+}
+
+.collapsible-section.active .collapsible-content {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.collapsible-content .sub-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 13px;
+    color: var(--dark-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    padding-left: 5px;
+}
+
+.collapsible-content .sub-item:hover {
+    color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.05);
+    padding-left: 10px;
+}
+
+.collapsible-content .sub-item i {
+    margin-right: 8px;
+    font-size: 12px;
+    width: 14px;
+    text-align: center;
+    color: var(--secondary-color);
+}
+
+.collapsible-content .view-all {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 12px;
+}
+
+/* Quick Links Grid */
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.quick-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 5px;
+    font-size: 12px;
+    color: var(--dark-color);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.05);
+    background: rgba(0,0,0,0.02);
+}
+
+.quick-link:hover {
+    background: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+    border-color: rgba(var(--primary-color-rgb), 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.quick-link i {
+    font-size: 16px;
+    margin-bottom: 6px;
+    color: var(--secondary-color);
+}
+
+.quick-link span {
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; max-height: 0; }
+    to { opacity: 1; max-height: 500px; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .mega-menu-collapsible {
+        width: 95vw;
+        left: 2.5vw;
+        transform: none;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .quick-links-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .quick-links-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .collapsible-header {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .collapsible-content .sub-item {
+        padding: 6px 0;
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,823 @@
+/* 
+ * assets/css/auth.css
+ * Flip Card Authentication Styles
+ */
+
+/* ===== RESET AND BASE STYLES ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 0;
+    margin: 0;
+}
+
+.auth-page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-main-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ===== FLIP CARD CONTAINER - RESPONSIVE ===== */
+.flip-card-container {
+    width: 100%;
+    max-width: 420px;
+    height: 520px;
+    perspective: 1000px;
+    margin: 0 ;
+}
+
+.flip-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 20px;
+}
+
+.flip-card.flipped {
+    transform: rotateY(180deg);
+}
+
+/* ===== GLASS CARD STYLING ===== */
+.card-side {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Back side is rotated */
+.card-side.back {
+    transform: rotateY(180deg);
+}
+
+/* ===== CARD HEADER ===== */
+.card-header {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.card-logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px;
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+}
+
+.card-logo i {
+    font-size: 36px;
+    color: white;
+}
+
+.card-title {
+    color: #2d3436;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.card-subtitle {
+    color: #636e72;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0%;
+}
+
+/* ===== CARD BODY ===== */
+.card-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Scrollbar Styling */
+.card-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.card-body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.card-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* ===== FORM STYLES ===== */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0px;
+    color: #2d3436;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #2d3436;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #4361ee;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+
+.form-input::placeholder {
+    color: #b2bec3;
+}
+
+/* Textarea */
+textarea.form-input {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Select Styling */
+select.form-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23636e72'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 20px;
+    padding-right: 45px;
+}
+
+/* ===== PASSWORD TOGGLE ===== */
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 38px;
+    background: none;
+    border: none;
+    color: #636e72;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.password-toggle:hover {
+    color: #4361ee;
+}
+
+/* ===== PASSWORD STRENGTH ===== */
+.password-strength {
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.password-strength-meter {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* ===== CHECKBOX ===== */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #4361ee;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    color: #636e72;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* ===== ACCOUNT TYPE SELECTION ===== */
+.account-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.account-type-option {
+    padding: 12px 8px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.account-type-option:hover {
+    border-color: #4361ee;
+    background: rgba(67, 97, 238, 0.05);
+}
+
+.account-type-option.selected {
+    border-color: #4361ee;
+    background: rgba(67, 97, 238, 0.1);
+}
+
+.account-type-option input {
+    display: none;
+}
+
+.account-type-option i {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #636e72;
+}
+
+.account-type-option.selected i {
+    color: #4361ee;
+}
+
+.account-type-option span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #2d3436;
+}
+
+/* ===== ERROR MESSAGES ===== */
+.form-error {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ===== SUCCESS MESSAGES ===== */
+.form-success {
+    background: rgba(46, 204, 113, 0.1);
+    border: 1px solid rgba(46, 204, 113, 0.2);
+    border-radius: 10px;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    color: #27ae60;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.btn-submit {
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+}
+
+.btn-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-submit i {
+    font-size: 14px;
+}
+
+/* ===== FLIP BUTTON ===== */
+.flip-button {
+    background: transparent;
+    border: 2px solid #4361ee;
+    color: #4361ee;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.flip-button:hover {
+    background: rgba(67, 97, 238, 0.1);
+    transform: translateY(-1px);
+}
+
+/* ===== PROGRESS STEPS ===== */
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    position: relative;
+}
+
+.progress-steps:before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e0e0e0;
+    z-index: 1;
+}
+
+.progress-step {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #636e72;
+    margin-bottom: 8px;
+}
+
+.progress-step.active .step-circle {
+    border-color: #4361ee;
+    background: #4361ee;
+    color: white;
+}
+
+.step-label {
+    font-size: 12px;
+    color: #636e72;
+    font-weight: 500;
+}
+
+.progress-step.active .step-label {
+    color: #4361ee;
+    font-weight: 600;
+}
+
+/* ===== BACK BUTTON ===== */
+.btn-back {
+    background: transparent;
+    border: 2px solid #636e72;
+    color: #636e72;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.btn-back:hover {
+    background: rgba(99, 110, 114, 0.1);
+    border-color: #2d3436;
+    color: #2d3436;
+}
+
+/* ===== TWO COLUMN LAYOUT ===== */
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    
+}
+
+/* ===== FILE UPLOAD ===== */
+.file-upload {
+    border: 2px dashed #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-upload:hover {
+    border-color: #4361ee;
+    background: rgba(67, 97, 238, 0.05);
+}
+
+.file-upload input {
+    display: none;
+}
+
+.file-upload i {
+    font-size: 32px;
+    color: #636e72;
+    margin-bottom: 10px;
+}
+
+.file-upload span {
+    display: block;
+    color: #636e72;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* ===== DIVIDER ===== */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    color: #636e72;
+}
+
+.divider:before,
+.divider:after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.divider span {
+    padding: 0 15px;
+    font-size: 14px;
+}
+
+/* ===== SOCIAL LOGIN ===== */
+.social-login {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.social-btn {
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    color: #2d3436;
+}
+
+.social-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.social-btn.google:hover {
+    border-color: #db4437;
+    color: #db4437;
+}
+
+.social-btn.facebook:hover {
+    border-color: #4267B2;
+    color: #4267B2;
+}
+
+.social-btn i {
+    font-size: 18px;
+}
+
+/* ===== LOADING SPINNER ===== */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Medium screens (tablets) */
+@media (min-width: 768px) {
+    .flip-card-container {
+        max-width: 500px;
+        height: 580px;
+    }
+    
+    .card-body {
+        padding: 25px 35px;
+    }
+    
+    
+    .file-upload {
+        padding: 25px;
+    }
+    
+    textarea.form-input {
+        min-height: 90px;
+    }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1024px) {
+    .flip-card-container {
+        max-width: 600px;
+        height: 650px;
+    }
+    
+    .card-header {
+        padding: 30px 35px 20px;
+    }
+    
+    .card-body {
+        padding: 30px 40px;
+    }
+    
+    .card-logo {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 20px;
+    }
+    
+    .card-logo i {
+        font-size: 42px;
+    }
+    
+    .card-title {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+    
+    .card-subtitle {
+        font-size: 16px;
+    }
+    
+    .form-input {
+        padding: 14px 18px;
+        font-size: 16px;
+    }
+    
+    .form-label {
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .btn-submit, .flip-button, .btn-back {
+        padding: 16px;
+        font-size: 17px;
+    }
+    
+    .password-toggle {
+        top: 42px;
+        right: 18px;
+    }
+    
+  
+    
+    .account-type-option {
+        padding: 15px 10px;
+    }
+    
+    .account-type-option i {
+        font-size: 22px;
+        margin-bottom: 8px;
+    }
+    
+    .account-type-option span {
+        font-size: 13px;
+    }
+    
+    .step-circle {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+    
+    .step-label {
+        font-size: 13px;
+    }
+    
+    .file-upload {
+        padding: 30px;
+    }
+    
+    .file-upload i {
+        font-size: 36px;
+        margin-bottom: 15px;
+    }
+    
+    .file-upload div {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    
+    .file-upload span {
+        font-size: 14px;
+    }
+    
+    textarea.form-input {
+        min-height: 100px;
+    }
+}
+
+/* Extra large screens */
+@media (min-width: 1400px) {
+    .flip-card-container {
+        max-width: 700px;
+        height: 700px;
+    }
+    
+    .card-header {
+        padding: 35px 40px 25px;
+    }
+    
+    .card-body {
+        padding: 35px 45px;
+    }
+    
+    .card-logo {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 25px;
+    }
+    
+    .card-logo i {
+        font-size: 48px;
+    }
+    
+    .card-title {
+        font-size: 32px;
+        margin-bottom: 10px;
+    }
+    
+    .card-subtitle {
+        font-size: 18px;
+    }
+    
+    .auth-form {
+        gap: 22px;
+    }
+    
+    .form-input {
+        padding: 16px 20px;
+        font-size: 17px;
+    }
+    
+    .form-label {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    
+    .btn-submit, .flip-button, .btn-back {
+        padding: 18px;
+        font-size: 18px;
+    }
+    
+    .password-toggle {
+        top: 46px;
+        right: 20px;
+    }
+    
+   
+    
+    .account-type-option {
+        padding: 18px 12px;
+    }
+    
+    .account-type-option i {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    
+    .account-type-option span {
+        font-size: 14px;
+    }
+    
+    .step-circle {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    .step-label {
+        font-size: 14px;
+    }
+    
+    .progress-steps {
+        margin: 25px 0;
+    }
+    
+    .file-upload {
+        padding: 35px;
+    }
+    
+    .file-upload i {
+        font-size: 40px;
+        margin-bottom: 18px;
+    }
+    
+    .file-upload div {
+        font-size: 17px;
+    }
+    
+    textarea.form-input {
+        min-height: 120px;
+    }
+}
+
+/* For very small screens */
+@media (max-width: 480px) {
+    .flip-card-container {
+        height: 560px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    .two-column {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+   
+}

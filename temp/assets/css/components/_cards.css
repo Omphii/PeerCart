@@ -1,0 +1,66 @@
+/* ============================================
+   CARD COMPONENTS
+   ============================================ */
+
+.card {
+    background-color: rgb(var(--color-surface));
+    border: 1px solid rgb(var(--color-border));
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    padding: var(--space-6) var(--space-6) 0;
+    margin-bottom: var(--space-4);
+}
+
+.card-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: rgb(var(--color-text));
+    margin-bottom: var(--space-2);
+}
+
+.card-subtitle {
+    font-size: var(--font-size-sm);
+    color: rgb(var(--color-text-muted));
+}
+
+.card-body {
+    padding: var(--space-6);
+}
+
+.card-footer {
+    padding: 0 var(--space-6) var(--space-6);
+    margin-top: var(--space-4);
+}
+
+/* Card Variants */
+.card-elevated {
+    box-shadow: var(--shadow-lg);
+    border: none;
+}
+
+.card-glass {
+    background: rgba(var(--color-surface), 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--color-border), 0.2);
+}
+
+.card-borderless {
+    border: none;
+}
+
+.card-clickable {
+    cursor: pointer;
+}
+
+.card-clickable:hover {
+    border-color: rgb(var(--color-primary));
+}

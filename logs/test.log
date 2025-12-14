@@ -1,0 +1,111 @@
+[2025-12-02 18:26:44] [TEST-INFO] === COMPREHENSIVE AUTH TEST STARTED ===
+[2025-12-02 18:26:44] [TEST-INFO] Test URL: /PeerCart2/tests//final_test.php
+[2025-12-02 18:26:44] [TEST-INFO] Session ID: q5jdnrfi1n96cj7fbc02v8lgku
+[2025-12-02 18:26:44] [TEST-SUCCESS] File exists: ../includes/bootstrap.php
+[2025-12-02 18:26:44] [TEST-SUCCESS] File exists: ../includes/database.php
+[2025-12-02 18:26:44] [TEST-SUCCESS] File exists: ../includes/functions.php
+[2025-12-02 18:26:44] [TEST-SUCCESS] File exists: ../includes/auth/login.php
+[2025-12-02 18:26:44] [TEST-SUCCESS] File exists: ../includes/auth/register.php
+[2025-12-02 18:26:44] [TEST-INFO] Attempting database connection...
+[2025-12-02 18:26:46] [TEST-INFO] === COMPREHENSIVE AUTH TEST STARTED ===
+[2025-12-02 18:26:46] [TEST-INFO] Test URL: /PeerCart2/tests//final_test.php
+[2025-12-02 18:26:46] [TEST-INFO] Session ID: q5jdnrfi1n96cj7fbc02v8lgku
+[2025-12-02 18:26:46] [TEST-SUCCESS] File exists: ../includes/bootstrap.php
+[2025-12-02 18:26:46] [TEST-SUCCESS] File exists: ../includes/database.php
+[2025-12-02 18:26:46] [TEST-SUCCESS] File exists: ../includes/functions.php
+[2025-12-02 18:26:46] [TEST-SUCCESS] File exists: ../includes/auth/login.php
+[2025-12-02 18:26:46] [TEST-SUCCESS] File exists: ../includes/auth/register.php
+[2025-12-02 18:26:46] [TEST-INFO] Attempting database connection...
+[2025-12-02 18:26:53] [TEST-INFO] === COMPREHENSIVE AUTH TEST STARTED ===
+[2025-12-02 18:26:53] [TEST-INFO] Test URL: /PeerCart2/tests//final_test.php
+[2025-12-02 18:26:53] [TEST-INFO] Session ID: q5jdnrfi1n96cj7fbc02v8lgku
+[2025-12-02 18:26:53] [TEST-SUCCESS] File exists: ../includes/bootstrap.php
+[2025-12-02 18:26:53] [TEST-SUCCESS] File exists: ../includes/database.php
+[2025-12-02 18:26:53] [TEST-SUCCESS] File exists: ../includes/functions.php
+[2025-12-02 18:26:53] [TEST-SUCCESS] File exists: ../includes/auth/login.php
+[2025-12-02 18:26:53] [TEST-SUCCESS] File exists: ../includes/auth/register.php
+[2025-12-02 18:26:53] [TEST-INFO] Attempting database connection...
+[2025-12-02 19:22:40] [TEST-INFO] === COMPREHENSIVE AUTH TEST STARTED ===
+[2025-12-02 19:22:40] [TEST-INFO] Test URL: /PeerCart2/tests/final_test.php
+[2025-12-02 19:22:40] [TEST-INFO] Session ID: q5jdnrfi1n96cj7fbc02v8lgku
+[2025-12-02 19:22:40] [TEST-SUCCESS] File exists: ../includes/bootstrap.php
+[2025-12-02 19:22:40] [TEST-SUCCESS] File exists: ../includes/database.php
+[2025-12-02 19:22:40] [TEST-SUCCESS] File exists: ../includes/functions.php
+[2025-12-02 19:22:40] [TEST-SUCCESS] File exists: ../includes/auth/login.php
+[2025-12-02 19:22:40] [TEST-SUCCESS] File exists: ../includes/auth/register.php
+[2025-12-02 19:22:40] [TEST-INFO] Attempting database connection...
+[2025-12-02 19:22:45] [TEST-INFO] === COMPREHENSIVE AUTH TEST STARTED ===
+[2025-12-02 19:22:45] [TEST-INFO] Test URL: /PeerCart2/tests/test_auth_comprehensive.php
+[2025-12-02 19:22:45] [TEST-INFO] Session ID: q5jdnrfi1n96cj7fbc02v8lgku
+[2025-12-02 19:22:45] [TEST-SUCCESS] File exists: includes/bootstrap.php
+[2025-12-02 19:22:45] [TEST-SUCCESS] File exists: includes/database.php
+[2025-12-02 19:22:45] [TEST-SUCCESS] File exists: includes/functions.php
+[2025-12-02 19:22:45] [TEST-SUCCESS] File exists: includes/auth/login.php
+[2025-12-02 19:22:45] [TEST-SUCCESS] File exists: includes/auth/register.php
+[2025-12-02 19:22:45] [TEST-INFO] Attempting database connection...
+[2025-12-02 19:22:45] [TEST-SUCCESS] Database connection successful
+[2025-12-02 19:22:45] [TEST-SUCCESS] Test query executed: 1 + 1 = 2
+[2025-12-02 19:22:45] [TEST-SUCCESS] Users table exists
+[2025-12-02 19:22:45] [TEST-INFO] Total users in database: 4
+[2025-12-02 19:22:45] [TEST-INFO] User: ID=1, Email=buyer@example.com, Type=buyer, Active=1
+[2025-12-02 19:22:45] [TEST-INFO] User: ID=2, Email=seller@example.com, Type=seller, Active=1
+[2025-12-02 19:22:45] [TEST-INFO] User: ID=3, Email=test378@test.com, Type=buyer, Active=1
+[2025-12-02 19:22:45] [TEST-INFO] User: ID=4, Email=test573@test.com, Type=seller, Active=1
+[2025-12-02 19:22:45] [TEST-INFO] Loading bootstrap and functions...
+[2025-12-02 21:22:45] [TEST-SUCCESS] Bootstrap and functions loaded
+[2025-12-02 21:22:45] [TEST-INFO] Session ID: q5jdnrfi1n96cj7fbc02v8lgku
+[2025-12-02 21:22:45] [TEST-INFO] Session Name: PHPSESSID
+[2025-12-02 21:22:45] [TEST-SUCCESS] CSRF functions available
+[2025-12-02 21:22:45] [TEST-INFO] Generated CSRF Token 1: 03a7a79fe9001e82a535...
+[2025-12-02 21:22:45] [TEST-SUCCESS] Token 1 Validation: VALID
+[2025-12-02 21:22:45] [TEST-INFO] Generated CSRF Token 2: 3f2a14e0466a00b400c5...
+[2025-12-02 21:22:45] [TEST-SUCCESS] Token 2 Validation: VALID
+[2025-12-02 21:22:45] [TEST-SUCCESS] Token 1 Re-validation: INVALID (Correct)
+[2025-12-02 21:22:45] [TEST-INFO] CSRF tokens in session: {"general":{"692f3c852a3fc3.00581610":{"token":"03a7a79fe9001e82a535825fb3752bf2bfbdbb0d8fbf2ab3b2bde8c1ea6ff6d3","created":1764703365,"expires":1764706965,"used":true,"used_at":1764703365},"692f3c852f5907.17848636":{"token":"3f2a14e0466a00b400c595bb13f252e4426a84eddf6b566045450557bf8b896e","created":1764703365,"expires":1764706965,"used":true,"used_at":1764703365}}}
+[2025-12-02 21:22:45] [TEST-INFO] isLoggedIn(): FALSE
+[2025-12-02 21:22:45] [TEST-INFO] Testing authentication for: buyer@example.com
+[2025-12-02 21:22:45] [TEST-SUCCESS] Authentication SUCCESS for: buyer@example.com
+[2025-12-02 21:22:45] [TEST-INFO] User details - ID: 1, Type: buyer, Name: John
+[2025-12-02 21:22:45] [TEST-SUCCESS] User type matches expected: buyer
+[2025-12-02 21:22:45] [TEST-SUCCESS] createUserSession() - isLoggedIn(): TRUE
+[2025-12-02 21:22:45] [TEST-INFO] Role checks - isBuyer: 1, isSeller: , isAdmin: 
+[2025-12-02 21:22:45] [TEST-INFO] Logged out user: buyer@example.com
+[2025-12-02 21:22:45] [TEST-INFO] Testing authentication for: seller@example.com
+[2025-12-02 21:22:45] [TEST-SUCCESS] Authentication SUCCESS for: seller@example.com
+[2025-12-02 21:22:45] [TEST-INFO] User details - ID: 2, Type: seller, Name: Jane
+[2025-12-02 21:22:45] [TEST-SUCCESS] User type matches expected: seller
+[2025-12-02 21:22:45] [TEST-SUCCESS] createUserSession() - isLoggedIn(): TRUE
+[2025-12-02 21:22:45] [TEST-INFO] Role checks - isBuyer: , isSeller: 1, isAdmin: 
+[2025-12-02 21:22:45] [TEST-INFO] Logged out user: seller@example.com
+[2025-12-02 21:22:45] [TEST-INFO] Testing authentication for: test378@test.com
+[2025-12-02 21:22:45] [TEST-SUCCESS] Authentication SUCCESS for: test378@test.com
+[2025-12-02 21:22:45] [TEST-INFO] User details - ID: 3, Type: buyer, Name: Test
+[2025-12-02 21:22:45] [TEST-SUCCESS] User type matches expected: buyer
+[2025-12-02 21:22:45] [TEST-SUCCESS] createUserSession() - isLoggedIn(): TRUE
+[2025-12-02 21:22:45] [TEST-INFO] Role checks - isBuyer: 1, isSeller: , isAdmin: 
+[2025-12-02 21:22:45] [TEST-INFO] Logged out user: test378@test.com
+[2025-12-02 21:22:45] [TEST-INFO] Testing authentication for: test573@test.com
+[2025-12-02 21:22:45] [TEST-SUCCESS] Authentication SUCCESS for: test573@test.com
+[2025-12-02 21:22:45] [TEST-INFO] User details - ID: 4, Type: seller, Name: Test
+[2025-12-02 21:22:45] [TEST-SUCCESS] User type matches expected: seller
+[2025-12-02 21:22:45] [TEST-SUCCESS] createUserSession() - isLoggedIn(): TRUE
+[2025-12-02 21:22:45] [TEST-INFO] Role checks - isBuyer: , isSeller: 1, isAdmin: 
+[2025-12-02 21:22:45] [TEST-INFO] Logged out user: test573@test.com
+[2025-12-02 21:22:45] [TEST-SUCCESS] sanitizeInput test - Original: <script>alert('xss')</script>Hello World, Sanitized: Hello World, Safe: Yes
+[2025-12-02 21:22:45] [TEST-INFO] Password validation for 'weak': INVALID - Password must be at least 8 characters long, Password must contain at least one uppercase letter, Password must contain at least one number, Password must contain at least one special character
+[2025-12-02 21:22:45] [TEST-INFO] Password validation for 'noUpper': INVALID - Password must contain at least one uppercase letter
+[2025-12-02 21:22:45] [TEST-INFO] Password validation for 'noLower': INVALID - Password must contain at least one lowercase letter
+[2025-12-02 21:22:45] [TEST-INFO] Password validation for 'noNumber': INVALID - Password must contain at least one number
+[2025-12-02 21:22:45] [TEST-INFO] Password validation for 'noSpecial': INVALID - Password must contain at least one special character
+[2025-12-02 21:22:45] [TEST-SUCCESS] Password validation for 'valid': VALID
+[2025-12-02 21:22:45] [TEST-SUCCESS] Registration validation: VALID
+[2025-12-02 21:22:45] [TEST-INFO] Generated form CSRF token: 8e4ac7202289a2c7cfe0...
+[2025-12-02 21:22:45] [TEST-SUCCESS] Database test: PASSED
+[2025-12-02 21:22:45] [TEST-SUCCESS] CSRF test: PASSED
+[2025-12-02 21:22:45] [TEST-SUCCESS] Authentication test: PASSED
+[2025-12-02 21:22:45] [TEST-ERROR] Session test: FAILED
+[2025-12-02 21:22:45] [TEST-SUCCESS] Functions test: PASSED
+[2025-12-02 21:22:45] [TEST-ERROR] OVERALL TEST RESULT: SYSTEM ISSUES DETECTED - Failed: session
+[2025-12-02 21:22:45] [TEST-INFO] === COMPREHENSIVE AUTH TEST COMPLETED ===
+[2025-12-02 21:22:45] [TEST-INFO] Overall result: SOME FAILED
+[2025-12-02 21:22:45] [TEST-INFO] Session ID at end: 

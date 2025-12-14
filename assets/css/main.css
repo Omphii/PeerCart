@@ -1,0 +1,30 @@
+/* 
+ * PEERCART MAIN CSS - ENTRY POINT
+ * This file imports all other CSS files in correct order
+ */
+
+/* 1. Base styles (variables, reset, typography) */
+@import url('base.css');
+
+/* 2. Component styles - Home page */
+@import url('home/main.css');
+
+/* 3. Navigation and Footer */
+@import url('navbar.css');
+@import url('footer.css');
+
+/* 4. Page-specific styles */
+@import url('listing.css');
+@import url('listings.css');
+@import url('sell.css');
+@import url('auth.css');
+@import url('dashboard.css');
+@import url('cart.css');
+
+/* 5. Shared Components */
+@import url('testimonials.css');
+@import url('promotions.css');
+@import url('categories.css');
+
+/* 6. Utilities (loaded last for override capability) */
+@import url('utilities.css');

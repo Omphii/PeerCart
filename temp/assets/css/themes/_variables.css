@@ -1,0 +1,53 @@
+/* ============================================
+   THEME VARIABLES FOR DARK MODE
+   ============================================ */
+
+:root[data-theme="dark"] {
+    /* Color System - Dark Mode */
+    --color-bg: 26, 26, 46;          /* #1a1a2e */
+    --color-surface: 45, 48, 71;     /* #2d3047 */
+    --color-text: 248, 250, 252;     /* #f8fafc */
+    --color-text-muted: 203, 213, 224; /* #cbd5e1 */
+    --color-border: 71, 85, 105;     /* #475569 */
+    
+    /* Shadows - Darker for dark mode */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.35);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* Light mode overrides (already set as default) */
+:root[data-theme="light"] {
+    --color-bg: 255, 255, 255;
+    --color-surface: 248, 249, 250;
+    --color-text: 26, 26, 46;
+    --color-text-muted: 108, 117, 125;
+    --color-border: 226, 232, 240;
+    
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Auto theme based on system preference */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --color-bg: 26, 26, 46;
+        --color-surface: 45, 48, 71;
+        --color-text: 248, 250, 252;
+        --color-text-muted: 203, 213, 224;
+        --color-border: 71, 85, 105;
+    }
+}
+
+/* High contrast theme for accessibility */
+:root[data-theme="high-contrast"] {
+    --color-bg: 0, 0, 0;
+    --color-surface: 17, 17, 17;
+    --color-text: 255, 255, 255;
+    --color-text-muted: 204, 204, 204;
+    --color-border: 102, 102, 102;
+    --color-primary: 0, 149, 255;
+}
