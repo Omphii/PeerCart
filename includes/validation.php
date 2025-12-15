@@ -3,25 +3,33 @@
  * PeerCart - Validation Functions
  */
 
+/**
+ * Validate listing data
+ */
 function validateListingData(array $data): array {
     $errors = [];
     
+    // Title validation
     if (empty($data['name']) || strlen($data['name']) < 3 || strlen($data['name']) > 100) {
         $errors['name'] = "Item name must be between 3 and 100 characters";
     }
     
+    // Price validation
     if (empty($data['price']) || !is_numeric($data['price']) || $data['price'] < 0) {
         $errors['price'] = "Valid price is required";
     }
     
+    // Description validation
     if (empty($data['description']) || strlen($data['description']) < 10) {
         $errors['description'] = "Description must be at least 10 characters long";
     }
     
+    // Category validation
     if (empty($data['category_id']) || !is_numeric($data['category_id'])) {
         $errors['category_id'] = "Please select a valid category";
     }
     
+    // Quantity validation
     if (empty($data['quantity']) || !is_numeric($data['quantity']) || $data['quantity'] < 1) {
         $errors['quantity'] = "Valid quantity is required";
     }
@@ -29,6 +37,9 @@ function validateListingData(array $data): array {
     return $errors;
 }
 
+/**
+ * Validate image upload
+ */
 function validateImageUpload(array $file, int $maxSize = 5 * 1024 * 1024): array {
     $errors = [];
     
@@ -37,10 +48,12 @@ function validateImageUpload(array $file, int $maxSize = 5 * 1024 * 1024): array
         return $errors;
     }
     
+    // Check file size
     if ($file['size'] > $maxSize) {
         $errors[] = "File size must be less than " . ($maxSize / 1024 / 1024) . "MB";
     }
     
+    // Check file type
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     $finfo = finfo_open(FILEINFO_MIME_TYPE);
     $mimeType = finfo_file($finfo, $file['tmp_name']);

@@ -1,5 +1,5 @@
-/* C:\laragon\www\PeerCart2\assets\css\home.css */
-@import url('categories.css');
+/* assets/css/home/main.css */
 @import url('hero.css');
+@import url('categories.css');
 @import url('promotions.css');
 @import url('testimonials.css');

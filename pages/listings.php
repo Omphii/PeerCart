@@ -4,9 +4,20 @@ ini_set('display_errors', 1);
 
 require_once __DIR__ . '/../includes/bootstrap.php';
 
-$title = 'Browse Listings - PeerCart';
+$title = 'PeerCart - Discover Amazing Deals';
 $currentPage = 'listings';
-includePartial('header', compact('title', 'currentPage'));
+
+// Set additional styles BEFORE including header
+$additionalStyles = ['listings'];
+
+// Check if includePartial exists, otherwise include header directly
+if (function_exists('includePartial')) {
+    includePartial('header', compact('title', 'currentPage', 'additionalStyles'));
+} else {
+    // Fallback: include header directly with all required variables
+    $pageHead = '';
+    require_once __DIR__ . '/../includes/header.php';
+}
 
 // --- Filter variables ---
 $search = $_GET['search'] ?? '';
@@ -120,35 +131,7 @@ try {
     $error = "Database error: " . $e->getMessage();
 }
 
-function timeAgo($datetime){
-    $time = strtotime($datetime);
-    $diff = time() - $time;
-    if($diff < 60) return "Just now";
-    if($diff < 3600) return floor($diff/60)." min ago";
-    if($diff < 86400) return floor($diff/3600)." hours ago";
-    if($diff < 604800) return floor($diff/86400)." days ago";
-    return date('M j, Y',$time);
-}
-
-function buildPaginationUrl($page){
-    global $search, $category_id, $condition, $city, $min_price, $max_price, $sort;
-    $params = [
-        'page'=>$page,
-        'search'=>$search,
-        'category_id'=>$category_id,
-        'condition'=>$condition,
-        'city'=>$city,
-        'min_price'=>$min_price,
-        'max_price'=>$max_price,
-        'sort'=>$sort
-    ];
-    return url('pages/listings.php?'.http_build_query(array_filter($params)));
-}
 ?>
-
-<link rel="stylesheet" href="<?= asset('css/main.css') ?>">
-<link rel="stylesheet" href="<?= asset('css/listings.css') ?>">
-
 <div class="listings-container">
 
     <?php if(isset($error)): ?>
@@ -273,7 +256,7 @@ function buildPaginationUrl($page){
         <div class="listing-card">
             <a href="<?= url('pages/listing.php?id='.$listing['id']) ?>">
                 <div class="listing-image">
-                    <img src="<?= getListingImage($listing['image']) ?>" alt="<?= htmlspecialchars($listing['name']) ?>" onerror="this.src='<?= asset('images/products/default-product.png') ?>'">
+                    <img src="<?= !empty($listing['image']) ? BASE_URL . '/assets/uploads/' . $listing['image'] : BASE_URL . '/assets/images/products/default-product.png' ?>" alt="<?= htmlspecialchars($listing['name']) ?>" onerror="this.src='https://via.placeholder.com/300x200/4361ee/ffffff?text=No+Image'">
                     <span class="price-tag">R<?= number_format($listing['price'],2) ?></span>
                     <?php if($listing['created_at'] > date('Y-m-d H:i:s', strtotime('-3 days'))): ?>
                         <span class="badge-new">New</span>

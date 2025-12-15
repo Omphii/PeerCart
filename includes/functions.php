@@ -2,6 +2,7 @@
 /**
  * PeerCart - Core Functions
  * This file contains essential helper functions used throughout the site.
+ * Keep functions organized and add proper documentation.
  */
 
 // ============================================================================
@@ -12,6 +13,10 @@
 if (!function_exists('app_log')) {
     /**
      * Main logging function - logs to both file and database if available
+     * 
+     * @param string $message The message to log
+     * @param string $type Log type: INFO, ERROR, WARNING, DEBUG, SECURITY
+     * @param array $context Additional data to include with the log
      */
     function app_log(string $message, string $type = 'INFO', array $context = []): void {
         // Always log to file using SimpleLogger
@@ -28,35 +33,62 @@ if (!function_exists('app_log')) {
             try {
                 $userId = $_SESSION['user_id'] ?? null;
                 
+                // Map our log types to Logger methods
                 switch (strtoupper($type)) {
-                    case 'ERROR':   Logger::getInstance()->error($message, $context, $userId); break;
-                    case 'WARNING': Logger::getInstance()->warning($message, $context, $userId); break;
-                    case 'DEBUG':   Logger::getInstance()->debug($message, $context, $userId); break;
-                    case 'SECURITY':Logger::getInstance()->security($message, $context, $userId); break;
-                    default:        Logger::getInstance()->info($message, $context, $userId); break;
+                    case 'ERROR':
+                        Logger::getInstance()->error($message, $context, $userId);
+                        break;
+                    case 'WARNING':
+                        Logger::getInstance()->warning($message, $context, $userId);
+                        break;
+                    case 'DEBUG':
+                        Logger::getInstance()->debug($message, $context, $userId);
+                        break;
+                    case 'SECURITY':
+                        Logger::getInstance()->security($message, $context, $userId);
+                        break;
+                    default:
+                        Logger::getInstance()->info($message, $context, $userId);
+                        break;
                 }
             } catch (Exception $e) {
-                error_log("Database logging failed: " . $e->getMessage());
+                // If database logging fails, we still have file logging
+                // No need to do anything here
             }
         }
     }
     
+    /**
+     * Quick function to log errors
+     */
     function log_error(string $message, array $context = []): void {
         app_log($message, 'ERROR', $context);
     }
     
+    /**
+     * Quick function to log warnings
+     */
     function log_warning(string $message, array $context = []): void {
         app_log($message, 'WARNING', $context);
     }
     
+    /**
+     * Quick function for info logs
+     */
     function log_info(string $message, array $context = []): void {
         app_log($message, 'INFO', $context);
     }
     
+    /**
+     * Quick function for debug logs
+     */
     function log_debug(string $message, array $context = []): void {
         app_log($message, 'DEBUG', $context);
     }
     
+    /**
+     * Quick function for security-related logs
+     */
     function log_security(string $message, array $context = []): void {
         app_log($message, 'SECURITY', $context);
     }
@@ -66,36 +98,60 @@ if (!function_exists('app_log')) {
 // SESSION & AUTHENTICATION FUNCTIONS
 // ============================================================================
 
+/**
+ * Check if user is currently logged in
+ * Validates session timeout and security checks
+ * 
+ * @return bool True if user is logged in and session is valid
+ */
 function isLoggedIn(): bool {
+    // Check if session variables exist
     if (!isset($_SESSION['user_id'], $_SESSION['last_activity'])) {
         return false;
     }
 
-    $sessionTimeout = 3600; // 1 hour
+    // Session timeout check - 1 hour (3600 seconds)
+    $sessionTimeout = 3600;
     if ((time() - $_SESSION['last_activity']) > $sessionTimeout) {
         secureLogout();
         return false;
     }
 
+    // Update last activity timestamp
     $_SESSION['last_activity'] = time();
     return true;
 }
 
+/**
+ * Check if current user is an admin
+ */
 function isAdmin(): bool {
     return isLoggedIn() && ($_SESSION['user_type'] ?? '') === 'admin';
 }
 
+/**
+ * Check if current user is a seller
+ */
 function isSeller(): bool {
     return isLoggedIn() && ($_SESSION['user_type'] ?? '') === 'seller';
 }
 
+/**
+ * Check if current user is a buyer
+ */
 function isBuyer(): bool {
     return isLoggedIn() && ($_SESSION['user_type'] ?? '') === 'buyer';
 }
 
+/**
+ * Securely destroy user session
+ * Clears all session data and removes session cookie
+ */
 function secureLogout(): void {
+    // Clear all session variables
     $_SESSION = [];
     
+    // Delete session cookie
     if (ini_get("session.use_cookies")) {
         $params = session_get_cookie_params();
         setcookie(
@@ -109,32 +165,40 @@ function secureLogout(): void {
         );
     }
     
+    // Destroy the session
     session_destroy();
 }
 
+/**
+ * Create a secure user session after successful login
+ * 
+ * @param array $user User data from database
+ */
 function createUserSession(array $user): void {
+    // Regenerate session ID to prevent session fixation
     session_regenerate_id(true);
     
+    // Set session variables
     $_SESSION = [
         'user_id'       => (int)$user['id'],
         'user_name'     => htmlspecialchars($user['name'] ?? 'User'),
         'user_surname'  => htmlspecialchars($user['surname'] ?? ''),
         'user_email'    => filter_var($user['email'], FILTER_SANITIZE_EMAIL),
         'user_type'     => htmlspecialchars($user['user_type'] ?? 'buyer'),
-        'user_avatar'   => $user['profile_image'] ?? null,
         'last_activity' => time(),
         'ip_address'    => $_SERVER['REMOTE_ADDR'] ?? 'unknown',
         'user_agent'    => $_SERVER['HTTP_USER_AGENT'] ?? 'unknown',
         'login_time'    => time()
     ];
 
-    // Update last login
+    // Update last login in database
     try {
         $db = getDBConnection();
         $stmt = $db->prepare("UPDATE users SET last_login = NOW() WHERE id = ?");
         $stmt->execute([$user['id']]);
     } catch (Exception $e) {
-        log_error("Failed to update last login: " . $e->getMessage());
+        // Log error but don't break the login process
+        error_log("Failed to update last login: " . $e->getMessage());
     }
 }
 
@@ -142,41 +206,68 @@ function createUserSession(array $user): void {
 // INPUT VALIDATION & SANITIZATION
 // ============================================================================
 
+/**
+ * Clean user input to prevent XSS attacks
+ * 
+ * @param mixed $data The data to sanitize
+ * @param bool $allow_html Whether to allow HTML (use carefully!)
+ * @return mixed Sanitized data
+ */
 function sanitizeInput($data, bool $allow_html = false) {
+    // Handle arrays recursively
     if (is_array($data)) {
         return array_map(fn($item) => sanitizeInput($item, $allow_html), $data);
     }
     
+    // Convert to string and trim
     $data = trim((string)$data);
+    
+    // Remove control characters
     $data = str_replace(["\0", "\r", "\n", "\t"], '', $data);
+    
+    // Remove script tags
     $data = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $data);
     
+    // Apply appropriate sanitization
     if ($allow_html) {
+        // Allow some HTML but sanitize it
         return filter_var($data, FILTER_SANITIZE_SPECIAL_CHARS);
     } else {
+        // Convert special characters to HTML entities
         return htmlspecialchars(strip_tags($data), ENT_QUOTES, 'UTF-8');
     }
 }
 
+/**
+ * Validate password strength
+ * 
+ * @param string $password Password to validate
+ * @return array Array of error messages (empty if password is valid)
+ */
 function validatePassword(string $password): array {
     $errors = [];
     
+    // Minimum length check
     if (strlen($password) < 8) {
         $errors[] = "Password must be at least 8 characters";
     }
     
+    // Uppercase letter check
     if (!preg_match('/[A-Z]/', $password)) {
         $errors[] = "Password must contain at least one uppercase letter";
     }
     
+    // Lowercase letter check
     if (!preg_match('/[a-z]/', $password)) {
         $errors[] = "Password must contain at least one lowercase letter";
     }
     
+    // Number check
     if (!preg_match('/[0-9]/', $password)) {
         $errors[] = "Password must contain at least one number";
     }
     
+    // Special character check
     if (!preg_match('/[^A-Za-z0-9]/', $password)) {
         $errors[] = "Password must contain at least one special character";
     }
@@ -184,10 +275,16 @@ function validatePassword(string $password): array {
     return $errors;
 }
 
+/**
+ * Validate user registration input
+ * 
+ * @param array $data Registration form data
+ * @return array Array of validation errors
+ */
 function validateRegistrationInput(array $data): array {
     $errors = [];
     
-    // Name validation
+    // Name validation (2-50 characters, letters, spaces, hyphens only)
     if (empty($data['name']) || strlen($data['name']) < 2 || !preg_match('/^[a-zA-Z\s\-]{2,50}$/', $data['name'])) {
         $errors[] = "Valid first name (2-50 characters) is required";
     }
@@ -229,15 +326,30 @@ function validateRegistrationInput(array $data): array {
 // DATABASE FUNCTIONS
 // ============================================================================
 
+/**
+ * Get PDO database connection
+ * 
+ * @return PDO Database connection object
+ * @throws RuntimeException If connection fails
+ */
 function getDBConnection(): PDO {
     try {
         return Database::getInstance()->getConnection();
     } catch (PDOException $e) {
+        // Log the error
         error_log("Database connection failed: " . $e->getMessage());
         throw new RuntimeException('Database connection unavailable. Please try again later.');
     }
 }
 
+/**
+ * Execute a database query safely
+ * 
+ * @param string $sql SQL query with placeholders
+ * @param array $params Parameters for the query
+ * @return PDOStatement The executed statement
+ * @throws PDOException If query fails
+ */
 function executeQuery(string $sql, array $params = []): PDOStatement {
     $db = getDBConnection();
     $stmt = $db->prepare($sql);
@@ -245,6 +357,12 @@ function executeQuery(string $sql, array $params = []): PDOStatement {
     return $stmt;
 }
 
+/**
+ * Check if email already exists in database
+ * 
+ * @param string $email Email to check
+ * @return bool True if email exists, false otherwise
+ */
 function emailExists(string $email): bool {
     try {
         $stmt = executeQuery("SELECT id FROM users WHERE email = ?", [$email]);
@@ -255,6 +373,13 @@ function emailExists(string $email): bool {
     }
 }
 
+/**
+ * Authenticate user with email and password
+ * 
+ * @param string $email User email
+ * @param string $password User password
+ * @return array|null User data if authenticated, null otherwise
+ */
 function authenticateUser(string $email, string $password): ?array {
     try {
         $db = getDBConnection();
@@ -267,12 +392,16 @@ function authenticateUser(string $email, string $password): ?array {
         $stmt->execute([':email' => $email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        // If user not found, still verify password to prevent timing attacks
         if (!$user) {
+            // Use a dummy password hash with same length as our real hashes
             password_verify($password, '$2y$10$' . str_repeat('a', 53));
             return null;
         }
 
+        // Verify password
         if (password_verify($password, $user['password'])) {
+            // Remove password from returned array
             unset($user['password']);
             return $user;
         }
@@ -286,18 +415,17 @@ function authenticateUser(string $email, string $password): ?array {
 }
 
 // ============================================================================
-// URL & ASSET HELPER FUNCTIONS (IMPROVED VERSION)
+// URL & ASSET HELPER FUNCTIONS
 // ============================================================================
 
 /**
  * Generate URL for assets (CSS, JS, images)
- * Handles different types of asset paths with cache busting
+ * Handles different types of asset paths
+ * 
+ * @param string $path Relative path to asset
+ * @return string Full URL to the asset
  */
-function asset($path, $version = false): string {
-    if (empty($path)) {
-        return BASE_URL . '/assets/images/products/default-product.png';
-    }
-    
+function asset($path) {
     // Remove leading slash if present
     $path = ltrim($path, '/');
     
@@ -306,102 +434,48 @@ function asset($path, $version = false): string {
         return $path;
     }
     
-    // Check if file exists locally
-    $localPath = ROOT_PATH . '/' . $path;
-    
-    // Common asset prefixes mapping
-    $assetTypes = [
-        'css/' => 'assets/css/',
-        'js/' => 'assets/js/',
-        'images/' => 'assets/images/',
-        'fonts/' => 'assets/fonts/',
-        'uploads/' => 'uploads/',
-        'assets/' => 'assets/'
-    ];
-    
-    // Check if path starts with any known prefix
-    foreach ($assetTypes as $prefix => $folder) {
-        if (strpos($path, $prefix) === 0) {
-            // Already has correct prefix
-            break;
-        }
+    // Check for different asset types
+    if (strpos($path, 'assets/') === 0) {
+        // Already in assets folder
+        return BASE_URL . '/' . $path;
+    } elseif (strpos($path, 'uploads/') === 0) {
+        // Uploaded file
+        return BASE_URL . '/' . $path;
+    } elseif (strpos($path, 'css/') === 0) {
+        // CSS file
+        return BASE_URL . '/assets/css/' . substr($path, 4);
+    } elseif (strpos($path, 'js/') === 0) {
+        // JS file
+        return BASE_URL . '/assets/js/' . substr($path, 3);
+    } elseif (strpos($path, 'images/') === 0) {
+        // Image file
+        return BASE_URL . '/assets/images/' . substr($path, 7);
     }
     
-    // If no known prefix, assume it's in assets folder
-    if (!preg_match('/^(assets\/|uploads\/|css\/|js\/|images\/|fonts\/)/', $path)) {
-        $path = 'assets/' . $path;
-    }
-    
-    // Build full URL
-    $assetUrl = BASE_URL . '/' . $path;
-    
-    // Add cache busting version if requested and file exists
-    if ($version && file_exists(ROOT_PATH . '/' . $path)) {
-        $filemtime = @filemtime(ROOT_PATH . '/' . $path);
-        $assetUrl .= '?v=' . ($filemtime ?: time());
-    }
-    
-    return $assetUrl;
-}
-
-/**
- * Get image URL with fallback
- */
-function getImageUrl(?string $imagePath, string $type = 'listing'): string {
-    if (empty($imagePath)) {
-        switch ($type) {
-            case 'profile':
-                return asset('images/users/default-user.png');
-            case 'product':
-            case 'listing':
-            default:
-                return asset('images/products/default-product.png');
-        }
-    }
-    
-    // Check if it's a full URL
-    if (filter_var($imagePath, FILTER_VALIDATE_URL)) {
-        return $imagePath;
-    }
-    
-    // Check common locations
-    $possiblePaths = [
-        'uploads/listings/' . basename($imagePath),
-        'uploads/profile/' . basename($imagePath),
-        'assets/uploads/' . basename($imagePath),
-        'uploads/' . basename($imagePath),
-        $imagePath
-    ];
-    
-    foreach ($possiblePaths as $path) {
-        $fullPath = ROOT_PATH . '/' . $path;
-        if (file_exists($fullPath) && is_file($fullPath)) {
-            return asset($path);
-        }
-    }
-    
-    // Return default if not found
-    return asset('images/products/default-product.png');
+    // Default to assets folder
+    return BASE_URL . '/assets/' . $path;
 }
 
 /**
  * Generate full URL for site pages
+ * 
+ * @param string $path Page path
+ * @return string Full URL
  */
-function url($path, $query = []): string {
+function url($path) {
     $path = ltrim($path, '/');
-    $url = BASE_URL . '/' . $path;
-    
-    if (!empty($query)) {
-        $url .= '?' . http_build_query($query);
-    }
-    
-    return $url;
+    return BASE_URL . '/' . $path;
 }
 
 // ============================================================================
 // REDIRECTION FUNCTIONS
 // ============================================================================
 
+/**
+ * Redirect user based on their role after login
+ * 
+ * @return string Redirect URL
+ */
 function redirectBasedOnRole(): string {
     $userType = $_SESSION['user_type'] ?? 'buyer';
     
@@ -419,11 +493,19 @@ function redirectBasedOnRole(): string {
 // FLASH MESSAGE SYSTEM
 // ============================================================================
 
+/**
+ * Store a flash message to display on next page load
+ * 
+ * @param string $message The message to display
+ * @param string $type Message type: success, error, warning, info
+ */
 function setFlashMessage(string $message, string $type = 'info'): void {
+    // Initialize flash messages array if needed
     if (!isset($_SESSION['flash_messages'])) {
         $_SESSION['flash_messages'] = [];
     }
     
+    // Add the message
     $_SESSION['flash_messages'][] = [
         'message'   => $message,
         'type'      => $type,
@@ -431,6 +513,10 @@ function setFlashMessage(string $message, string $type = 'info'): void {
     ];
 }
 
+/**
+ * Display all flash messages and clear them
+ * Call this function in your template where you want messages to appear
+ */
 function displayFlashMessage(): void {
     if (empty($_SESSION['flash_messages'])) {
         return;
@@ -489,6 +575,12 @@ function displayFlashMessage(): void {
 // CATEGORY & LISTING FUNCTIONS
 // ============================================================================
 
+/**
+ * Get all active categories with listing counts
+ * 
+ * @param int|null $limit Maximum number of categories to return
+ * @return array List of categories
+ */
 function getCategories(?int $limit = null): array {
     try {
         $sql = "
@@ -514,6 +606,45 @@ function getCategories(?int $limit = null): array {
     }
 }
 
+function getListingImage($imagePath = null) {
+    $defaultImage = BASE_URL . '/assets/images/products/default-product.png';
+    
+    if (empty($imagePath)) {
+        return $defaultImage;
+    }
+    
+    // Check if it's already a full URL
+    if (strpos($imagePath, 'http://') === 0 || strpos($imagePath, 'https://') === 0) {
+        return $imagePath;
+    }
+    
+    // Check if file exists locally
+    $localPath = ROOT_PATH . '/' . ltrim($imagePath, '/');
+    if (file_exists($localPath)) {
+        return BASE_URL . '/' . ltrim($imagePath, '/');
+    }
+    
+    // Try in uploads directory
+    $uploadsPath = ROOT_PATH . '/uploads/listings/' . basename($imagePath);
+    if (file_exists($uploadsPath)) {
+        return BASE_URL . '/uploads/listings/' . basename($imagePath);
+    }
+    
+    // Try in assets/uploads directory
+    $assetsUploadsPath = ROOT_PATH . '/assets/uploads/' . basename($imagePath);
+    if (file_exists($assetsUploadsPath)) {
+        return BASE_URL . '/assets/uploads/' . basename($imagePath);
+    }
+    
+    return $defaultImage;
+}
+
+/**
+ * Get popular cities from user data
+ * 
+ * @param int|null $limit Maximum number of cities to return
+ * @return array List of cities
+ */
 function getCities(?int $limit = 8): array {
     try {
         $sql = "SELECT DISTINCT city FROM users WHERE city IS NOT NULL AND city != '' ORDER BY city";
@@ -534,24 +665,65 @@ function getCities(?int $limit = 8): array {
 // FORMATTING FUNCTIONS
 // ============================================================================
 
+/**
+ * Format price with South African Rand symbol (VAT INCLUSIVE)
+ * All prices displayed to customers should be VAT inclusive
+ * 
+ * @param float $amount Price amount (VAT inclusive)
+ * @return string Formatted price string with R symbol
+ */
 function format_zar(float $amount): string {
     return 'R ' . number_format($amount, 2, ',', ' ');
 }
 
+/**
+ * Calculate the VAT portion from a VAT-inclusive price
+ * Use this when you need to show the VAT amount separately on invoices
+ * 
+ * @param float $amount_incl_vat VAT inclusive price
+ * @param float $vat_rate VAT rate (default 15% = 0.15)
+ * @return float VAT amount contained in the price
+ */
 function calculate_vat_from_inclusive(float $amount_incl_vat, float $vat_rate = 0.15): float {
+    // Formula: VAT = PriceInclusive × (VAT Rate / (1 + VAT Rate))
     $vat_amount = $amount_incl_vat * ($vat_rate / (1 + $vat_rate));
     return round($vat_amount, 2);
 }
 
+/**
+ * Calculate price excluding VAT from a VAT-inclusive price
+ * Use this for accounting or when storing prices in database
+ * 
+ * @param float $amount_incl_vat VAT inclusive price
+ * @param float $vat_rate VAT rate (default 15%)
+ * @return float Price excluding VAT
+ */
 function price_excluding_vat(float $amount_incl_vat, float $vat_rate = 0.15): float {
+    // Formula: PriceExcluding = PriceInclusive / (1 + VAT Rate)
     $amount_excl_vat = $amount_incl_vat / (1 + $vat_rate);
     return round($amount_excl_vat, 2);
 }
 
+/**
+ * Calculate price including VAT (old function - keep for backwards compatibility)
+ * But note: In South Africa, all displayed prices SHOULD be VAT inclusive
+ * 
+ * @param float $amount_excl_vat Price excluding VAT
+ * @param float $vat_rate VAT rate (default 15%)
+ * @return float Price including VAT
+ */
 function price_including_vat(float $amount_excl_vat, float $vat_rate = 0.15): float {
     return round($amount_excl_vat * (1 + $vat_rate), 2);
 }
 
+/**
+ * Format price breakdown for invoices/receipts
+ * Shows both VAT inclusive and exclusive amounts
+ * 
+ * @param float $amount_incl_vat VAT inclusive price
+ * @param float $vat_rate VAT rate (default 15%)
+ * @return array Price breakdown array
+ */
 function get_price_breakdown(float $amount_incl_vat, float $vat_rate = 0.15): array {
     $vat_amount = calculate_vat_from_inclusive($amount_incl_vat, $vat_rate);
     $amount_excl_vat = price_excluding_vat($amount_incl_vat, $vat_rate);
@@ -564,6 +736,14 @@ function get_price_breakdown(float $amount_incl_vat, float $vat_rate = 0.15): ar
     ];
 }
 
+/**
+ * Display price with VAT info for product listings
+ * Shows "R XX.XX (incl. VAT)" for clarity
+ * 
+ * @param float $amount_incl_vat VAT inclusive price
+ * @param bool $show_vat_text Whether to show "(incl. VAT)" text
+ * @return string Formatted price with optional VAT text
+ */
 function display_price_with_vat(float $amount_incl_vat, bool $show_vat_text = true): string {
     $formatted = format_zar($amount_incl_vat);
     if ($show_vat_text) {
@@ -572,6 +752,14 @@ function display_price_with_vat(float $amount_incl_vat, bool $show_vat_text = tr
     return $formatted;
 }
 
+/**
+ * Calculate total with VAT for multiple items
+ * Use this for shopping cart totals
+ * 
+ * @param array $prices Array of VAT inclusive prices
+ * @param float $vat_rate VAT rate (default 15%)
+ * @return array Total breakdown
+ */
 function calculate_cart_total(array $prices, float $vat_rate = 0.15): array {
     $total_incl_vat = array_sum($prices);
     $total_excl_vat = 0;
@@ -598,6 +786,11 @@ function calculate_cart_total(array $prices, float $vat_rate = 0.15): array {
 // CART FUNCTIONS
 // ============================================================================
 
+/**
+ * Get total number of users (for footer stats)
+ * 
+ * @return int Total active users
+ */
 function getTotalUsers(): int {
     try {
         $stmt = executeQuery("SELECT COUNT(*) as count FROM users WHERE is_active = 1");
@@ -608,6 +801,11 @@ function getTotalUsers(): int {
     }
 }
 
+/**
+ * Get total number of active listings (for footer stats)
+ * 
+ * @return int Total active listings
+ */
 function getTotalListings(): int {
     try {
         $stmt = executeQuery("SELECT COUNT(*) as count FROM listings WHERE is_active = 1 AND status = 'active'");
@@ -618,6 +816,11 @@ function getTotalListings(): int {
     }
 }
 
+/**
+ * Get total number of completed transactions (for footer stats)
+ * 
+ * @return int Total completed transactions
+ */
 function getTotalTransactions(): int {
     try {
         $stmt = executeQuery("SELECT COUNT(*) as count FROM orders WHERE status IN ('delivered', 'completed')");
@@ -628,6 +831,13 @@ function getTotalTransactions(): int {
     }
 }
 
+/**
+ * Get cart item count for current user
+ * Works for both logged-in users (database) and guests (session)
+ * 
+ * @param int|null $user_id User ID (null for current user)
+ * @return int Number of items in cart
+ */
 function getCartCount($user_id = null): int {
     // Use provided user_id or get from session
     $user_id = $user_id ?? ($_SESSION['user_id'] ?? null);
@@ -653,6 +863,13 @@ function getCartCount($user_id = null): int {
 // HELPER FUNCTIONS FOR TEMPLATES
 // ============================================================================
 
+/**
+ * Include a partial template file
+ * 
+ * @param string $name Partial file name (without .php)
+ * @param array $data Variables to extract for the partial
+ * @throws Exception If partial file not found
+ */
 function includePartial($name, $data = []) {
     // Look for partial in includes directory
     $file = __DIR__ . '/' . $name . '.php';
@@ -677,9 +894,16 @@ function includePartial($name, $data = []) {
 }
 
 // ============================================================================
-// CSRF TOKEN FUNCTIONS
+// CSRF TOKEN FUNCTIONS (Simplified Version)
 // ============================================================================
 
+/**
+ * Generate a CSRF token for form protection
+ * This is a simplified version - you can enhance it later
+ * 
+ * @param string $purpose Purpose of the token (e.g., 'login', 'register')
+ * @return string The generated token
+ */
 function generateCSRFToken(string $purpose = 'general'): string {
     // Initialize token array if needed
     if (!isset($_SESSION['csrf_tokens'])) {
@@ -698,6 +922,13 @@ function generateCSRFToken(string $purpose = 'general'): string {
     return $token;
 }
 
+/**
+ * Validate a CSRF token
+ * 
+ * @param string $token The token to validate
+ * @param string $purpose Purpose the token was generated for
+ * @return bool True if token is valid, false otherwise
+ */
 function validateCSRFToken(string $token, string $purpose = 'general'): bool {
     // Check if token exists
     if (!isset($_SESSION['csrf_tokens'][$purpose])) {
@@ -720,283 +951,5 @@ function validateCSRFToken(string $token, string $purpose = 'general'): bool {
     }
     
     return false;
-}
-
-// ============================================================================
-// ADDITIONAL HELPER FUNCTIONS (NEW)
-// ============================================================================
-
-/**
- * Time ago formatting
- */
-function time_elapsed_string($datetime, $full = false): string {
-    $now = new DateTime;
-    $ago = new DateTime($datetime);
-    $diff = $now->diff($ago);
-
-    $diff->w = floor($diff->d / 7);
-    $diff->d -= $diff->w * 7;
-
-    $string = [
-        'y' => 'year',
-        'm' => 'month',
-        'w' => 'week',
-        'd' => 'day',
-        'h' => 'hour',
-        'i' => 'minute',
-        's' => 'second',
-    ];
-    
-    foreach ($string as $k => &$v) {
-        if ($diff->$k) {
-            $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-        } else {
-            unset($string[$k]);
-        }
-    }
-
-    if (!$full) $string = array_slice($string, 0, 1);
-    return $string ? implode(', ', $string) . ' ago' : 'just now';
-}
-
-/**
- * Get user's full name
- */
-function getUserFullName(?int $userId = null): string {
-    if ($userId === null && isset($_SESSION['user_id'])) {
-        $firstName = $_SESSION['user_name'] ?? '';
-        $lastName = $_SESSION['user_surname'] ?? '';
-        return trim($firstName . ' ' . $lastName) ?: 'User';
-    }
-    
-    // If user ID provided, fetch from database
-    try {
-        $db = getDBConnection();
-        $stmt = $db->prepare("SELECT name, surname FROM users WHERE id = ?");
-        $stmt->execute([$userId]);
-        $user = $stmt->fetch();
-        
-        if ($user) {
-            return trim($user['name'] . ' ' . $user['surname']) ?: 'User';
-        }
-    } catch (Exception $e) {
-        log_error("Failed to get user name: " . $e->getMessage());
-    }
-    
-    return 'User';
-}
-
-/**
- * Get user's profile image URL
- */
-function getUserProfileImage(?int $userId = null): string {
-    $defaultImage = asset('images/users/default-user.png');
-    
-    if ($userId === null && isset($_SESSION['user_id'])) {
-        $userId = $_SESSION['user_id'];
-    }
-    
-    if (!$userId) {
-        return $defaultImage;
-    }
-    
-    try {
-        $db = getDBConnection();
-        $stmt = $db->prepare("SELECT profile_image FROM users WHERE id = ?");
-        $stmt->execute([$userId]);
-        $user = $stmt->fetch();
-        
-        if ($user && !empty($user['profile_image'])) {
-            return getImageUrl($user['profile_image'], 'profile');
-        }
-    } catch (Exception $e) {
-        log_error("Failed to get user profile image: " . $e->getMessage());
-    }
-    
-    return $defaultImage;
-}
-
-/**
- * Sanitize filename for upload
- */
-function sanitizeFilename(string $filename): string {
-    $filename = preg_replace('/[^a-zA-Z0-9\.\-\_]/', '_', $filename);
-    $filename = preg_replace('/_{2,}/', '_', $filename);
-    return time() . '_' . $filename;
-}
-
-/**
- * Generate referral code
- */
-function generateReferralCode(): string {
-    return strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 8));
-}
-
-/**
- * Validate email address
- */
-function isValidEmail(string $email): bool {
-    return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
-}
-
-/**
- * Validate South African phone number
- */
-function isValidPhone(string $phone): bool {
-    $clean = preg_replace('/\D/', '', $phone);
-    return preg_match('/^0[0-9]{9,10}$/', $clean);
-}
-
-/**
- * Format phone number for display
- */
-function formatPhone(string $phone): string {
-    $clean = preg_replace('/\D/', '', $phone);
-    
-    if (strlen($clean) === 10) {
-        return preg_replace('/(\d{3})(\d{3})(\d{4})/', '$1 $2 $3', $clean);
-    } elseif (strlen($clean) === 11) {
-        return preg_replace('/(\d{3})(\d{4})(\d{4})/', '$1 $2 $3', $clean);
-    }
-    
-    return $phone;
-}
-
-/**
- * Redirect with message
- */
-function redirectWithMessage(string $url, string $message, string $type = 'success'): void {
-    setFlashMessage($message, $type);
-    header("Location: $url");
-    exit;
-}
-
-/**
- * Check if string is JSON
- */
-function isJson(string $string): bool {
-    json_decode($string);
-    return json_last_error() === JSON_ERROR_NONE;
-}
-
-/**
- * Get current page URL
- */
-function currentUrl(): string {
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    return $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-}
-
-/**
- * Get base URL without query string
- */
-function baseUrl(): string {
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-    $host = $_SERVER['HTTP_HOST'];
-    $script = $_SERVER['SCRIPT_NAME'];
-    
-    return $protocol . '://' . $host . dirname($script);
-}
-
-/**
- * Generate pagination links
- */
-function paginate(int $totalItems, int $perPage, int $currentPage, string $baseUrl): array {
-    $totalPages = ceil($totalItems / $perPage);
-    
-    $pagination = [
-        'total_items' => $totalItems,
-        'total_pages' => $totalPages,
-        'current_page' => $currentPage,
-        'per_page' => $perPage,
-        'has_previous' => $currentPage > 1,
-        'has_next' => $currentPage < $totalPages,
-        'pages' => []
-    ];
-    
-    // Calculate page range
-    $start = max(1, $currentPage - 2);
-    $end = min($totalPages, $currentPage + 2);
-    
-    for ($i = $start; $i <= $end; $i++) {
-        $pagination['pages'][] = [
-            'number' => $i,
-            'url' => $baseUrl . '?page=' . $i,
-            'is_current' => $i === $currentPage
-        ];
-    }
-    
-    return $pagination;
-}
-
-/**
- * Truncate text with ellipsis
- */
-function truncate(string $text, int $length = 100, string $ellipsis = '...'): string {
-    if (strlen($text) <= $length) {
-        return $text;
-    }
-    
-    $text = substr($text, 0, $length);
-    $text = substr($text, 0, strrpos($text, ' '));
-    return $text . $ellipsis;
-}
-
-/**
- * Generate slug from string
- */
-function slugify(string $text): string {
-    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-    $text = preg_replace('~[^-\w]+~', '', $text);
-    $text = trim($text, '-');
-    $text = preg_replace('~-+~', '-', $text);
-    $text = strtolower($text);
-    
-    if (empty($text)) {
-        return 'n-a';
-    }
-    
-    return $text;
-}
-
-/**
- * Check if request is AJAX
- */
-function isAjax(): bool {
-    return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 
-           strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
-}
-
-/**
- * Send JSON response
- */
-function jsonResponse(array $data, int $statusCode = 200): void {
-    http_response_code($statusCode);
-    header('Content-Type: application/json');
-    echo json_encode($data);
-    exit;
-}
-
-/**
- * Get client IP address
- */
-function getClientIp(): string {
-    $ip = $_SERVER['REMOTE_ADDR'] ?? '';
-    
-    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-        $ip = $_SERVER['HTTP_CLIENT_IP'];
-    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-    }
-    
-    return $ip;
-}
-
-/**
- * Generate order number
- */
-function generateOrderNumber(): string {
-    return 'ORD-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
 }
 ?>

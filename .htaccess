@@ -1,21 +1,20 @@
+# PeerCart2 .htaccess
+Options -Indexes -MultiViews
 RewriteEngine On
 
-# Redirect HTTP to HTTPS
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# Set base URL for your application
+# Set base for rewrites
 RewriteBase /PeerCart2/
 
-# Redirect root URL to home.php
+# Don't rewrite existing files, directories, or assets
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Exclude assets and uploads from routing
+RewriteRule ^(assets|uploads|includes)/(.*)$ - [L]
+
+# Route everything else to pages directory (except root)
+RewriteRule ^(?!pages/)(.+)$ pages/$1.php [L,QSA]
+
+# Redirect root to home.php
 RewriteRule ^$ pages/home.php [L]
-
-# Front controller pattern - redirect all other requests to index.php
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php [QSA,L]
-
-# Security headers
-Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
-Header always set X-Frame-Options DENY
-Header always set X-Content-Type-Options nosniff

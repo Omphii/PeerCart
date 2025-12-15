@@ -30,7 +30,7 @@ echo "<p>ROOT_PATH: " . ROOT_PATH . "</p>";
 
 // Test 4: Functions
 echo "<h2>4. Functions</h2>";
-echo "<p>asset() test: " . asset('css/main.css') . "</p>";
+echo "<p>asset() test: " . asset('assets/css/main.css') . "</p>";
 echo "<p>url() test: " . url('pages/listings.php') . "</p>";
 
 // Test 5: File Permissions

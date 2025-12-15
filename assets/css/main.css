@@ -21,10 +21,5 @@
 @import url('dashboard.css');
 @import url('cart.css');
 
-/* 5. Shared Components */
-@import url('testimonials.css');
-@import url('promotions.css');
-@import url('categories.css');
-
 /* 6. Utilities (loaded last for override capability) */
 @import url('utilities.css');
