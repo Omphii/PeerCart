@@ -1,0 +1,784 @@
+.orders-page {
+    min-height: calc(100vh - 200px);
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+.orders-bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.15;
+    z-index: 0;
+}
+
+.orders-bg-blob:nth-child(1) {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    top: -200px;
+    right: -200px;
+}
+
+.orders-bg-blob:nth-child(2) {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+    bottom: -100px;
+    left: -100px;
+}
+
+.orders-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.orders-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.orders-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
+}
+
+.orders-subtitle {
+    color: #6c757d;
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Glassmorphism Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(31, 38, 135, 0.1);
+    overflow: hidden;
+    transition: all 0.4s ease;
+    margin-bottom: 2rem;
+}
+
+.glass-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px rgba(31, 38, 135, 0.15);
+}
+
+.glass-card-header {
+    padding: 1.8rem;
+    background: rgba(67, 97, 238, 0.05);
+    border-bottom: 1px solid rgba(67, 97, 238, 0.1);
+}
+
+.glass-card-body {
+    padding: 2rem;
+}
+
+/* Alerts */
+.alert {
+    padding: 1.2rem 1.8rem;
+    border-radius: 16px;
+    border: none;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-success {
+    background: linear-gradient(135deg, rgba(112, 224, 0, 0.1) 0%, rgba(56, 176, 0, 0.1) 100%);
+    color: #0a3d02;
+    border-left: 4px solid #38b000;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, rgba(230, 57, 70, 0.1) 0%, rgba(163, 19, 60, 0.1) 100%);
+    color: #8a0000;
+    border-left: 4px solid #e63946;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, rgba(76, 201, 240, 0.1) 0%, rgba(58, 134, 255, 0.1) 100%);
+    color: #003049;
+    border-left: 4px solid #4cc9f0;
+}
+
+/* Filter Buttons */
+.orders-filter {
+    margin-bottom: 2rem;
+}
+
+.filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: rgba(67, 97, 238, 0.1);
+    color: #4361ee;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.filter-btn:hover {
+    background: rgba(67, 97, 238, 0.2);
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: white;
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+}
+
+/* Orders Table */
+.orders-table-container {
+    overflow-x: auto;
+    border-radius: 16px;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 1000px;
+}
+
+.orders-table thead th {
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(58, 12, 163, 0.1) 100%);
+    color: #4361ee;
+    font-weight: 700;
+    padding: 1.5rem;
+    border-bottom: 2px solid rgba(67, 97, 238, 0.1);
+    text-align: left;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.orders-table tbody tr {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.orders-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.orders-table tbody tr:hover {
+    background: rgba(67, 97, 238, 0.03);
+}
+
+.orders-table tbody td {
+    padding: 1.5rem;
+    vertical-align: middle;
+    color: #495057;
+}
+
+.order-number {
+    font-weight: 700;
+    color: #2b2d42;
+    font-size: 1.1rem;
+}
+
+.order-items-preview {
+    color: #6c757d;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+
+.order-date, .order-items-count, .order-total {
+    color: #495057;
+}
+
+.order-total strong {
+    font-size: 1.2rem;
+    color: #2b2d42;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.status-badge i {
+    font-size: 0.6rem;
+}
+
+.status-pending {
+    background: linear-gradient(135deg, #ffd166 0%, #ffb347 100%);
+    color: #8a4b00;
+}
+
+.status-processing {
+    background: linear-gradient(135deg, #4cc9f0 0%, #3a86ff 100%);
+    color: #003049;
+}
+
+.status-shipped {
+    background: linear-gradient(135deg, #7209b7 0%, #560bad 100%);
+    color: white;
+}
+
+.status-delivered {
+    background: linear-gradient(135deg, #70e000 0%, #38b000 100%);
+    color: #0a3d02;
+}
+
+.status-completed {
+    background: linear-gradient(135deg, #38b000 0%, #0a3d02 100%);
+    color: white;
+}
+
+.status-cancelled {
+    background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+    color: white;
+}
+
+/* Payment Status */
+.payment-status {
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.payment-pending {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.payment-completed, .payment-paid {
+    background: rgba(25, 135, 84, 0.1);
+    color: #198754;
+    border: 1px solid rgba(25, 135, 84, 0.3);
+}
+
+.payment-failed {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.view-btn, .cancel-btn, .track-btn, .print-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.view-btn {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+}
+
+.view-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+}
+
+.cancel-btn {
+    background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+}
+
+.cancel-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(247, 37, 133, 0.3);
+}
+
+.track-btn {
+    background: linear-gradient(135deg, #4cc9f0 0%, #3a86ff 100%);
+}
+
+.track-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
+}
+
+.print-btn {
+    background: linear-gradient(135deg, #7209b7 0%, #560bad 100%);
+}
+
+.print-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(114, 9, 183, 0.3);
+}
+
+/* Stats Cards */
+.orders-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 1.8rem;
+    text-align: center;
+    transition: all 0.4s ease;
+    box-shadow: 0 10px 30px rgba(31, 38, 135, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+}
+
+.stat-card:nth-child(2)::before {
+    background: linear-gradient(135deg, #70e000 0%, #38b000 100%);
+}
+
+.stat-card:nth-child(3)::before {
+    background: linear-gradient(135deg, #ffd166 0%, #ffb347 100%);
+}
+
+.stat-card:nth-child(4)::before {
+    background: linear-gradient(135deg, #4cc9f0 0%, #3a86ff 100%);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(31, 38, 135, 0.15);
+}
+
+.stat-icon {
+    font-size: 2.8rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-card:nth-child(2) .stat-icon {
+    background: linear-gradient(135deg, #70e000 0%, #38b000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-card:nth-child(3) .stat-icon {
+    background: linear-gradient(135deg, #ffd166 0%, #ffb347 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-card:nth-child(4) .stat-icon {
+    background: linear-gradient(135deg, #4cc9f0 0%, #3a86ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #2b2d42;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Empty Cart State */
+.cart-page {
+    min-height: calc(100vh - 200px);
+    padding: 2rem 1rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+.cart-bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.15;
+    z-index: 0;
+}
+
+.cart-bg-blob:nth-child(1) {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    top: -200px;
+    right: -200px;
+}
+
+.cart-bg-blob:nth-child(2) {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);
+    bottom: -100px;
+    left: -100px;
+}
+
+.cart-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.cart-items-column {
+    width: 100%;
+}
+
+.empty-cart-state {
+    text-align: center;
+    padding: 5rem 2rem;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 0 30px rgba(67, 97, 238, 0);
+    }
+}
+
+.empty-cart-icon {
+    width: 140px;
+    height: 140px;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(58, 12, 163, 0.1) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2.5rem;
+    animation: float 3s ease-in-out infinite, pulse-glow 2s ease-in-out infinite;
+    border: 2px solid rgba(67, 97, 238, 0.2);
+}
+
+.empty-cart-icon i {
+    font-size: 70px;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.empty-cart-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #2b2d42;
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+}
+
+.empty-cart-message {
+    color: #6c757d;
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.action-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1.2rem 2.5rem;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(67, 97, 238, 0.3);
+    color: white;
+}
+
+.btn-outline-primary {
+    background: white;
+    color: #4361ee;
+    border: 2px solid #4361ee;
+}
+
+.btn-outline-primary:hover {
+    background: rgba(67, 97, 238, 0.05);
+    transform: translateY(-5px);
+    color: #4361ee;
+    box-shadow: 0 5px 15px rgba(67, 97, 238, 0.2);
+}
+
+.btn-lg {
+    padding: 1.3rem 2.8rem;
+    font-size: 1.2rem;
+    border-radius: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .orders-table {
+        min-width: 900px;
+    }
+}
+
+@media (max-width: 992px) {
+    .orders-title {
+        font-size: 2.2rem;
+    }
+    
+    .orders-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .stat-card {
+        padding: 1.5rem;
+    }
+    
+    .stat-value {
+        font-size: 2rem;
+    }
+    
+    .orders-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .orders-title, .empty-cart-title {
+        font-size: 2rem;
+    }
+    
+    .orders-table-container {
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .orders-table {
+        display: block;
+        min-width: auto;
+    }
+    
+    .orders-table thead {
+        display: none;
+    }
+    
+    .orders-table tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 16px;
+        overflow: hidden;
+        background: white;
+    }
+    
+    .orders-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .orders-table tbody td:last-child {
+        border-bottom: none;
+    }
+    
+    .orders-table tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #4361ee;
+        flex: 0 0 40%;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .action-buttons {
+        justify-content: flex-end;
+    }
+    
+    .filter-buttons {
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+        flex-wrap: nowrap;
+    }
+    
+    .filter-btn {
+        white-space: nowrap;
+    }
+    
+    .orders-stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .empty-cart-title {
+        font-size: 1.8rem;
+    }
+    
+    .empty-cart-message {
+        font-size: 1.1rem;
+    }
+    
+    .action-buttons-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .orders-page, .cart-page {
+        padding: 1.5rem 1rem;
+    }
+    
+    .orders-title {
+        font-size: 1.8rem;
+    }
+    
+    .orders-subtitle {
+        font-size: 1rem;
+    }
+    
+    .glass-card-body {
+        padding: 1.5rem;
+    }
+    
+    .empty-cart-state {
+        padding: 3rem 1rem;
+    }
+    
+    .empty-cart-icon {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .empty-cart-icon i {
+        font-size: 60px;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.glass-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.me-2 {
+    margin-right: 0.5rem;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+.small {
+    font-size: 0.85rem;
+}
+
+.d-inline {
+    display: inline;
+}
